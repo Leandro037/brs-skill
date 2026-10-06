@@ -9,7 +9,7 @@ from .engine import BRS
 from .profiles import BRSProfile
 from .factory import brs_from_profile
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 __all__ = [
     "BRS",
