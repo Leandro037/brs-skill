@@ -134,6 +134,34 @@ result = brs.validate(
 print(result.decision)
 ```
 
+## BRS Playground
+
+v0.2 also includes a dependency-free web playground for trying the built-in profiles interactively.
+
+Run:
+
+```bash
+python -m apps.brs_playground
+```
+
+Then open:
+
+```text
+http://127.0.0.1:8000
+```
+
+The playground exposes:
+
+- JSON validation with optional default-based repair;
+- static Python validation;
+- research-document structure validation;
+- RELEASE/BLOCK decisions;
+- check-level evidence;
+- repair count and validation rounds;
+- final artifact and validation trace.
+
+The Playground is a demonstration application. It does not turn the starter profiles into certified validators.
+
 ## Run the examples
 
 ```bash
