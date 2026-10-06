@@ -20,7 +20,7 @@ class OpenAIResponsesProvider:
         client: Any | None = None,
         api_key: str | None = None,
     ) -> None:
-        self.model = model or os.getenv("BRS_OPENAI_MODEL", "gpt-5.5")
+        self.model = model or os.getenv("BRS_OPENAI_MODEL", "gpt-6-luna")
 
         if client is not None:
             self.client = client
