@@ -6,7 +6,7 @@ BRS is not a model. It is a **pre-release validation layer** that organizes expl
 
 ## Status
 
-**BRS Skill v0.2 — experimental implementation**
+**BRS Skill v0.3 — experimental implementation**
 
 This repository generalizes the BRS architecture beyond the original Motion Lab research domain. Cross-domain portability is a design goal and has not yet been independently validated.
 
@@ -44,7 +44,7 @@ BRS separates outcomes that are often collapsed into one metric:
 
 A central design principle is that **aggregate accuracy is not the same thing as release safety**.
 
-## Built-in profiles in v0.2
+## Built-in profiles
 
 BRS now includes three starter profiles:
 
@@ -71,17 +71,21 @@ brs-skill/
 │   ├── engine.py
 │   ├── profiles.py
 │   ├── factory.py
+│   ├── agentic.py
+│   ├── providers/
 │   └── builtin_profiles/
 │       ├── json_profile.py
 │       ├── code_profile.py
 │       └── research_document_profile.py
 ├── docs/
-│   └── PROFILES.md
+│   ├── PROFILES.md
+│   └── OPENAI.md
 ├── examples/
 │   ├── json_validation.py
 │   ├── use_json_profile.py
 │   ├── use_code_profile.py
-│   └── use_research_document_profile.py
+│   ├── use_research_document_profile.py
+│   └── openai_end_to_end.py
 └── tests/
     ├── test_engine.py
     └── test_builtin_profiles.py
@@ -134,9 +138,43 @@ result = brs.validate(
 print(result.decision)
 ```
 
+## OpenAI end-to-end adapter
+
+v0.3 adds an optional provider layer for real model generation and localized repair while keeping BRS Core provider-agnostic.
+
+```text
+Prompt
+  ↓
+OpenAI generation
+  ↓
+BRS validation
+  ↓
+FAIL → localized model repair
+          ↓
+     full revalidation
+          ↓
+     RELEASE / BLOCK
+```
+
+Install the optional dependency:
+
+```bash
+python -m pip install -e ".[openai]"
+```
+
+Set `OPENAI_API_KEY` in your environment and run:
+
+```bash
+python examples/openai_end_to_end.py
+```
+
+The default model is `gpt-6-luna` and can be overridden with `BRS_OPENAI_MODEL`.
+
+See [docs/OPENAI.md](./docs/OPENAI.md) for setup and safety behavior.
+
 ## BRS Playground
 
-v0.2 also includes a dependency-free web playground for trying the built-in profiles interactively.
+BRS also includes a dependency-free web playground for trying the built-in profiles interactively.
 
 Run:
 
