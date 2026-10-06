@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use BRS Skill in research, please cite this software."
+title: "BRS Skill: Binary Review Swarm validation framework"
+type: software
+authors:
+  - family-names: Palmieri
+    given-names: Leandro
+version: 0.1.0
+date-released: 2026-10-06
+repository-code: "https://github.com/Leandro037/brs-skill"
+license: MIT
