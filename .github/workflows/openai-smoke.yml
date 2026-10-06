@@ -2,6 +2,9 @@ name: OpenAI BRS smoke test
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - openai-smoke-run
 
 jobs:
   openai-smoke:
