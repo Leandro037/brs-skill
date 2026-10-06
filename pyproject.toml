@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "brs-skill"
+version = "0.1.0"
+description = "Binary Review Swarm: reusable validation, repair, revalidation, and release-safety orchestration for AI-generated artifacts"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Leandro Palmieri" }]
+keywords = ["ai", "llm", "validation", "guardrails", "agents", "safety", "repair"]
+
+[tool.setuptools.packages.find]
+include = ["brs*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
