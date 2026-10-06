@@ -5,7 +5,7 @@ type: software
 authors:
   - family-names: Palmieri
     given-names: Leandro
-version: 0.2.0
+version: 0.3.0
 date-released: 2026-10-06
 repository-code: "https://github.com/Leandro037/brs-skill"
 license: MIT
