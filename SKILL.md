@@ -54,6 +54,8 @@ Return a structured result with:
 - If a required check cannot run, fail closed unless the profile explicitly defines another policy.
 - Do not claim runtime correctness from artifact correctness alone.
 - Do not claim physical/perception correctness from synthetic runtime tests.
+- When a model is used for repair, enable repair only for explicitly permitted check IDs.
+- The model may propose a repair; BRS must still decide RELEASE/BLOCK after full revalidation.
 
 ## Atomic check design
 
@@ -103,6 +105,14 @@ Project-specific behavior belongs in profiles, for example:
 
 A profile defines checks and optionally a repair function and safety gate.
 
+## Provider adapters
+
+BRS Core should remain independent of any LLM provider.
+
+Provider adapters may implement generation and localized repair. In v0.3, the reference implementation includes an optional OpenAI Responses API adapter.
+
+The provider must not replace the BRS release decision.
+
 ## Failure memory
 
 Failure memory records observed defect patterns and evidence for future system development.
@@ -115,8 +125,9 @@ Changes derived from failure memory should be versioned and evaluated prospectiv
 
 Before finalizing an AI-generated artifact:
 
-1. call BRS with the artifact, intent, and profile;
-2. if BRS returns BLOCK, repair only the failed constraints when possible;
-3. rerun BRS after repair;
-4. deliver the artifact only after RELEASE;
-5. expose validation evidence when useful to the user or downstream system.
+1. generate the candidate artifact;
+2. call BRS with the artifact, intent, and profile;
+3. if BRS returns BLOCK and the failed checks are explicitly repairable, repair only those constraints;
+4. rerun the complete BRS validation after repair;
+5. deliver the artifact only after RELEASE;
+6. expose validation evidence when useful to the user or downstream system.
