@@ -6,7 +6,7 @@ BRS is not a model. It is a **pre-release validation layer** that organizes expl
 
 ## Status
 
-**BRS Skill v0.1 — experimental implementation**
+**BRS Skill v0.2 — experimental implementation**
 
 This repository generalizes the BRS architecture beyond the original Motion Lab research domain. Cross-domain portability is a design goal and has not yet been independently validated.
 
@@ -44,6 +44,18 @@ BRS separates outcomes that are often collapsed into one metric:
 
 A central design principle is that **aggregate accuracy is not the same thing as release safety**.
 
+## Built-in profiles in v0.2
+
+BRS now includes three starter profiles:
+
+| Profile | Purpose | Key boundary |
+|---|---|---|
+| `json` | Required fields and configured field types | Repairs only explicitly defaulted missing fields |
+| `code-python` | Static Python source validation | Does not execute untrusted code |
+| `research-document` | Structural Markdown research checks | Does not verify scientific truth or citation validity |
+
+See [docs/PROFILES.md](./docs/PROFILES.md).
+
 ## Repository structure
 
 ```text
@@ -57,14 +69,48 @@ brs-skill/
 │   ├── models.py
 │   ├── checks.py
 │   ├── engine.py
-│   └── profiles.py
+│   ├── profiles.py
+│   ├── factory.py
+│   └── builtin_profiles/
+│       ├── json_profile.py
+│       ├── code_profile.py
+│       └── research_document_profile.py
+├── docs/
+│   └── PROFILES.md
 ├── examples/
-│   └── json_validation.py
+│   ├── json_validation.py
+│   ├── use_json_profile.py
+│   ├── use_code_profile.py
+│   └── use_research_document_profile.py
 └── tests/
-    └── test_engine.py
+    ├── test_engine.py
+    └── test_builtin_profiles.py
 ```
 
-## Quick start
+## Quick start with a built-in profile
+
+```python
+from brs.factory import brs_from_profile
+from brs.builtin_profiles import make_json_profile
+
+profile = make_json_profile(
+    required_keys=("name", "repetitions"),
+    expected_types={"name": str, "repetitions": int},
+    defaults={"name": "untitled", "repetitions": 5},
+)
+
+brs, context = brs_from_profile(profile, max_repair_iterations=1)
+
+result = brs.validate(
+    {"repetitions": 3},
+    context=context,
+)
+
+print(result.decision.value)  # RELEASE
+print(result.artifact)        # {'repetitions': 3, 'name': 'untitled'}
+```
+
+## Quick start with custom checks
 
 ```python
 from brs import BRS, CheckResult, CheckStatus
@@ -87,6 +133,23 @@ result = brs.validate(
 
 print(result.decision)
 ```
+
+## Run the examples
+
+```bash
+python examples/use_json_profile.py
+python examples/use_code_profile.py
+python examples/use_research_document_profile.py
+```
+
+## Run tests
+
+```bash
+python -m pip install -e . pytest
+python -m pytest
+```
+
+GitHub Actions also runs the test suite on Python 3.10, 3.11, 3.12, and 3.13.
 
 ## Skill usage
 
