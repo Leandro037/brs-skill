@@ -1,0 +1,65 @@
+name: E17 EvalPlus recovery run
+
+on:
+  workflow_dispatch:
+
+jobs:
+  e17-recovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      BRS_E17_MODEL: gpt-4o-mini
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[openai]"
+          python -m pip install "evalplus==0.3.1"
+
+      - name: Run E17 and preserve raw output
+        run: python -m experiments.e17_evalplus_pilot > e17_raw_output.txt
+
+      - name: Extract final JSON object
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          raw = Path("e17_raw_output.txt").read_text(encoding="utf-8", errors="replace")
+          marker = '"summary"'
+          pos = raw.rfind(marker)
+          if pos < 0:
+              raise SystemExit("summary marker not found")
+          candidates = [i for i,ch in enumerate(raw[:pos]) if ch == "{"]
+          data = None
+          for start in reversed(candidates):
+              try:
+                  obj, _ = json.JSONDecoder().raw_decode(raw[start:])
+              except Exception:
+                  continue
+              if isinstance(obj, dict) and "summary" in obj and "cases" in obj:
+                  data = obj
+                  break
+          if data is None:
+              raise SystemExit("clean E17 JSON object not found")
+          Path("e17_output.json").write_text(
+              json.dumps(data, ensure_ascii=False, indent=2),
+              encoding="utf-8",
+          )
+          print(json.dumps(data["summary"], indent=2, ensure_ascii=False))
+          PY
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e17-evalplus-recovery-results
+          path: |
+            e17_output.json
+            e17_raw_output.txt
