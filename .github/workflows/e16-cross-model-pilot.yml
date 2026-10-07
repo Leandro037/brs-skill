@@ -1,9 +1,6 @@
 name: E16 cross-model pilot
 
 on:
-  push:
-    branches:
-      - experiment/e16-pilot-gpt41mini
   workflow_dispatch:
 
 jobs:
