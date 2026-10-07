@@ -1,6 +1,6 @@
 # Built-in Profiles
 
-BRS Skill v0.2 includes three starter profiles.
+BRS Skill v1.0 includes three starter profiles.
 
 They are examples and reusable building blocks, not claims of domain certification.
 
@@ -39,7 +39,7 @@ brs, context = brs_from_profile(profile)
 result = brs.validate("print('hello')", context=context)
 ```
 
-v0.2 intentionally performs static checks only:
+The built-in code profile intentionally performs static checks only:
 
 - non-empty source;
 - Python AST parsing;
