@@ -146,31 +146,73 @@ def extract_ground_truth_variants(value: Any) -> list[tuple[str, dict[str, Any]]
     return variants
 
 
-def value_matches(predicted: Any, expected: Any) -> bool:
+def deep_equal(predicted: Any, expected: Any) -> bool:
     predicted = normalize_scalar(predicted)
     expected = normalize_scalar(expected)
-
-    # BFCL v4 labels may encode acceptable alternatives as a list.
-    if isinstance(expected, list) and not isinstance(predicted, list):
-        return any(value_matches(predicted, option) for option in expected)
 
     if isinstance(expected, dict) and isinstance(predicted, dict):
         if set(expected) != set(predicted):
             return False
-        return all(value_matches(predicted[k], expected[k]) for k in expected)
+        return all(deep_equal(predicted[k], expected[k]) for k in expected)
 
     if isinstance(expected, list) and isinstance(predicted, list):
-        return predicted == expected
+        if len(expected) != len(predicted):
+            return False
+        return all(deep_equal(p, e) for p, e in zip(predicted, expected))
 
     return predicted == expected
 
 
-def args_match(predicted: dict[str, Any], expected: dict[str, Any]) -> bool:
-    # Ground-truth keys must match. BFCL possible answers already encode
-    # accepted optional/default variants where applicable.
-    if set(predicted) != set(expected):
+def value_matches(predicted: Any, accepted_values: Any) -> bool:
+    # BFCL v4 possible-answer arguments encode acceptable values as a list.
+    # Even when the runtime value is itself an array, the label uses a list
+    # of acceptable values, so compare against each alternative rather than
+    # accepting the alternatives container itself as a valid argument.
+    if isinstance(accepted_values, list):
+        return any(deep_equal(predicted, option) for option in accepted_values)
+    return deep_equal(predicted, accepted_values)
+
+
+def omission_allowed(accepted_values: Any) -> bool:
+    return (
+        isinstance(accepted_values, list)
+        and any(option == "" or option is None for option in accepted_values)
+    )
+
+
+def args_match(
+    predicted: dict[str, Any],
+    expected: dict[str, Any],
+    tool_spec: dict[str, Any],
+) -> bool:
+    params = tool_spec.get("parameters") or {}
+    props = params.get("properties") or {}
+    required = set(params.get("required") or [])
+
+    # Unknown or spurious argument names are not accepted.
+    if any(key not in props for key in predicted):
         return False
-    return all(value_matches(predicted[k], expected[k]) for k in expected)
+
+    # Every required schema field must be present.
+    if any(key not in predicted for key in required):
+        return False
+
+    for key, accepted_values in expected.items():
+        if key not in predicted:
+            # BFCL uses an empty-string alternative to represent an omitted
+            # optional/default argument in possible-answer labels.
+            if key not in required and omission_allowed(accepted_values):
+                continue
+            return False
+        if not value_matches(predicted[key], accepted_values):
+            return False
+
+    # Do not accept extra provided arguments that the external label did not
+    # define, even if the schema happens to allow them.
+    if any(key not in expected for key in predicted):
+        return False
+
+    return True
 
 
 def oracle_match(
@@ -178,6 +220,7 @@ def oracle_match(
     *,
     category: str,
     variants: list[tuple[str, dict[str, Any]]],
+    tools: list[dict[str, Any]] | None = None,
 ) -> tuple[bool, str]:
     if not isinstance(artifact, dict):
         return False, "Artifact must be a JSON object."
@@ -200,8 +243,18 @@ def oracle_match(
     if not isinstance(name, str) or not isinstance(arguments, dict):
         return False, "Call requires string name and object arguments."
 
+    tool_map = {
+        item.get("name"): item
+        for item in (tools or [])
+        if isinstance(item, dict) and isinstance(item.get("name"), str)
+    }
+
     for expected_name, expected_args in variants:
-        if name == expected_name and args_match(arguments, expected_args):
+        spec = tool_map.get(expected_name, {"parameters": {"properties": expected_args}})
+        if (
+            name == expected_name
+            and args_match(arguments, expected_args, spec)
+        ):
             return True, "Predicted call matches a BFCL possible-answer variant."
 
     expected_names = sorted({name for name, _ in variants})
@@ -327,6 +380,7 @@ def make_profile(
             artifact,
             category=category,
             variants=variants,
+            tools=tools,
         )
         return CheckResult(
             "BFCL_EXTERNAL_LABEL",
@@ -425,6 +479,7 @@ def main():
                 raw_artifact,
                 category=category,
                 variants=variants,
+                tools=tools,
             )
 
             calls = []
@@ -461,6 +516,7 @@ def main():
                 result.artifact,
                 category=category,
                 variants=variants,
+                tools=tools,
             )
             decision_matches_external = (
                 (result.decision.value == "RELEASE") == final_valid
