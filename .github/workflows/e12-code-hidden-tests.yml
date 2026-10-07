@@ -1,9 +1,6 @@
 name: E12 code hidden tests
 
 on:
-  push:
-    branches:
-      - experiment/e12-code-hidden-tests
   workflow_dispatch:
 
 jobs:
