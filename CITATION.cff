@@ -1,11 +1,25 @@
 cff-version: 1.2.0
-message: "If you use BRS Skill in research, please cite this software."
-title: "BRS Skill: Binary Review Swarm validation framework"
+message: "If you use Binary Review Swarm (BRS) in research or evaluation, please cite this software."
+title: "Binary Review Swarm (BRS) Skill"
 type: software
 authors:
-  - family-names: Palmieri
-    given-names: Leandro
-version: 0.3.0
-date-released: 2026-10-06
+  - family-names: "Palmieri"
+    given-names: "Leandro"
+version: "1.0.0"
+date-released: "2026-10-07"
+url: "https://github.com/Leandro037/brs-skill"
 repository-code: "https://github.com/Leandro037/brs-skill"
 license: MIT
+keywords:
+  - artificial intelligence
+  - large language models
+  - validation
+  - agents
+  - tool calling
+  - repair
+  - release safety
+abstract: >-
+  Binary Review Swarm (BRS) is a provider-agnostic validation architecture for
+  AI-generated artifacts. It applies explicit atomic checks, fail-closed veto,
+  localized bounded repair, mandatory full revalidation, and a final
+  RELEASE/BLOCK decision.
