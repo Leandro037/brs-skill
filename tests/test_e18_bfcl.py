@@ -49,3 +49,82 @@ def test_irrelevance_oracle_requires_abstention():
         variants=[],
     )
     assert not invalid
+
+
+
+def test_bfcl_optional_default_may_be_omitted():
+    artifact = {
+        "calls": [
+            {
+                "name": "board_game.chess.get_top_players",
+                "arguments": {"location": "New York", "minimum_rating": 2300},
+            }
+        ]
+    }
+    tools = [{
+        "name": "board_game.chess.get_top_players",
+        "parameters": {
+            "type": "dict",
+            "properties": {
+                "location": {"type": "string"},
+                "minimum_rating": {"type": "integer"},
+                "number_of_players": {"type": "integer"},
+            },
+            "required": ["location", "minimum_rating"],
+        },
+    }]
+    valid, _ = oracle_match(
+        artifact,
+        category="multiple",
+        variants=[(
+            "board_game.chess.get_top_players",
+            {
+                "location": ["New York", "NYC"],
+                "minimum_rating": [2300],
+                "number_of_players": ["", 10],
+            },
+        )],
+        tools=tools,
+    )
+    assert valid
+
+
+def test_bfcl_alternative_container_is_not_a_valid_scalar_value():
+    artifact = {
+        "calls": [
+            {
+                "name": "board_game.chess.get_top_players",
+                "arguments": {
+                    "location": ["New York", "NYC"],
+                    "minimum_rating": [2300],
+                    "number_of_players": ["", 10],
+                },
+            }
+        ]
+    }
+    tools = [{
+        "name": "board_game.chess.get_top_players",
+        "parameters": {
+            "type": "dict",
+            "properties": {
+                "location": {"type": "string"},
+                "minimum_rating": {"type": "integer"},
+                "number_of_players": {"type": "integer"},
+            },
+            "required": ["location", "minimum_rating"],
+        },
+    }]
+    valid, _ = oracle_match(
+        artifact,
+        category="multiple",
+        variants=[(
+            "board_game.chess.get_top_players",
+            {
+                "location": ["New York", "NYC"],
+                "minimum_rating": [2300],
+                "number_of_players": ["", 10],
+            },
+        )],
+        tools=tools,
+    )
+    assert not valid
