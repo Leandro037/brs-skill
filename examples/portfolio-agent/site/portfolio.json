@@ -1,0 +1,83 @@
+{
+  "hero": {
+    "eyebrow": "Senior IT Project Manager · AI · XR · Research",
+    "title": "Construyo productos tecnológicos que conectan ideas, datos y experiencias.",
+    "subtitle": "Gestión de proyectos, inteligencia artificial, XR, simulación e investigación aplicada. De la estrategia al prototipo y del prototipo a sistemas que se pueden medir, validar y mejorar.",
+    "primaryCta": "Ver proyectos",
+    "secondaryCta": "Sobre mí"
+  },
+  "stats": [
+    {"value": "12+", "label": "años en tecnología"},
+    {"value": "AI · XR", "label": "foco actual"},
+    {"value": "360", "label": "casos E14 BRS"},
+    {"value": "96.39%", "label": "pass rate BRS E14"}
+  ],
+  "about": {
+    "title": "Tecnología con criterio de producto e investigación",
+    "body": "Trabajo en la intersección entre dirección de proyectos, inteligencia artificial, XR, datos y simulación. Me interesa especialmente convertir problemas complejos en sistemas comprensibles, medibles y utilizables por equipos reales."
+  },
+  "projects": [
+    {
+      "tag": "AI VALIDATION",
+      "title": "Binary Review Swarm",
+      "description": "Arquitectura y skill reutilizable para validar, reparar y revalidar artefactos generados por IA antes de liberarlos.",
+      "metric": "85.56% → 96.39%",
+      "metricLabel": "pass rate en E14",
+      "link": "https://github.com/Leandro037/brs-skill"
+    },
+    {
+      "tag": "COMPUTER VISION",
+      "title": "Motion Analysis Lab",
+      "description": "Plataforma de análisis de movimiento 2D con visión por computadora para investigación, entrenamiento y evaluación.",
+      "metric": "Real-time",
+      "metricLabel": "captura + vídeo",
+      "link": "#contact"
+    },
+    {
+      "tag": "XR · HEALTH",
+      "title": "Kinesix XR",
+      "description": "Experiencias inmersivas y herramientas de rehabilitación basadas en seguimiento de movimiento y entrenamiento interactivo.",
+      "metric": "XR",
+      "metricLabel": "rehab & training",
+      "link": "#contact"
+    },
+    {
+      "tag": "AI · RESEARCH",
+      "title": "Research Agents",
+      "description": "Exploración de agentes que generan, validan y documentan artefactos experimentales con trazabilidad.",
+      "metric": "BRS",
+      "metricLabel": "validation layer",
+      "link": "https://github.com/Leandro037/brs-skill"
+    }
+  ],
+  "experience": [
+    {
+      "period": "2026 — Actualidad",
+      "role": "Project Manager",
+      "company": "NTT DATA",
+      "text": "Gestión end-to-end de proyectos tecnológicos, coordinación multidisciplinar, riesgos, stakeholders y reporting."
+    },
+    {
+      "period": "2019 — 2025",
+      "role": "CTO",
+      "company": "NeuroGroup XR / Kinesix XR",
+      "text": "Dirección técnica de producto XR aplicado a salud, visión por computadora, alianzas, validación y escalado internacional."
+    },
+    {
+      "period": "2020 — Actualidad",
+      "role": "Founder / Project Director",
+      "company": "NetMakers",
+      "text": "Productos digitales, IA aplicada y dirección de proyectos tecnológicos."
+    }
+  ],
+  "skills": ["Project Management","Artificial Intelligence","XR / VR / AR / MR","Computer Vision","Research","Data","Simulation","Product Strategy","Unity","Agile"],
+  "contact": {
+    "title": "¿Construimos algo que valga la pena medir?",
+    "body": "Estoy abierto a proyectos, investigación, producto, consultoría y conversaciones sobre IA aplicada, XR y validación de sistemas.",
+    "links": [
+      {"label": "LinkedIn", "url": "https://www.linkedin.com/in/leandro-palmieri-387471aa/"},
+      {"label": "GitHub", "url": "https://github.com/Leandro037"},
+      {"label": "YouTube", "url": "https://www.youtube.com/@leandropalmieri037"}
+    ]
+  }
+}
