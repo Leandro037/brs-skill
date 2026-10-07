@@ -1,6 +1,9 @@
 name: E18 BFCL tool-calling pilot
 
 on:
+  push:
+    branches:
+      - experiment/e18-bfcl-toolcalls
   workflow_dispatch:
 
 jobs:
