@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#07111f">
+  <title>Leandro Palmieri · AI · XR · Project Management</title>
+  <meta name="description" content="Portfolio profesional de Leandro Palmieri: Project Management, IA, XR, datos, simulación e investigación.">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="noise"></div>
+  <div class="cursor-glow" id="cursorGlow"></div>
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <header class="topbar">
+    <a class="brand magnetic" href="#home" aria-label="Inicio">
+      <span class="brand-mark">LP</span>
+      <span class="brand-text">LEANDRO<br>PALMIERI</span>
+    </a>
+
+    <nav class="nav" aria-label="Navegación principal">
+      <a href="#about" data-section="about">Perfil</a>
+      <a href="#projects" data-section="projects">Proyectos</a>
+      <a href="#experience" data-section="experience">Trayectoria</a>
+      <a href="#contact" data-section="contact">Contacto</a>
+    </nav>
+
+    <div class="top-actions">
+      <button class="ghost-btn magnetic" id="editBtn" type="button">Editar</button>
+      <button class="ai-btn magnetic" id="aiBtn" type="button"><span class="pulse-dot"></span> Editar con IA</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero section" id="home" data-observe>
+      <div class="hero-grid"></div>
+      <div class="hero-orb orb-a"></div>
+      <div class="hero-orb orb-b"></div>
+
+      <div class="hero-copy reveal">
+        <p class="eyebrow editable" data-path="hero.eyebrow"></p>
+        <h1 class="editable" data-path="hero.title"></h1>
+        <p class="hero-subtitle editable" data-path="hero.subtitle"></p>
+
+        <div class="hero-actions">
+          <a class="primary-btn magnetic" href="#projects"><span data-path="hero.primaryCta"></span><b>↗</b></a>
+          <a class="text-btn magnetic" href="#about"><span data-path="hero.secondaryCta"></span><b>↓</b></a>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal" aria-hidden="true">
+        <div class="signal-card">
+          <div class="signal-head">
+            <span>LIVE SYSTEM</span>
+            <span class="status"><i></i> VALIDATING</span>
+          </div>
+          <div class="signal-body">
+            <div class="ring ring-1"></div>
+            <div class="ring ring-2"></div>
+            <div class="ring ring-3"></div>
+            <div class="core">BRS</div>
+          </div>
+          <div class="signal-log">
+            <span>01 · GENERATE</span>
+            <span>02 · VALIDATE</span>
+            <span>03 · REPAIR</span>
+            <span>04 · RELEASE</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-strip reveal" id="stats"></div>
+    </section>
+
+    <section class="marquee-wrap" aria-hidden="true">
+      <div class="marquee">
+        <span>AI SYSTEMS · XR · COMPUTER VISION · PROJECT MANAGEMENT · RESEARCH · DATA · SIMULATION ·</span>
+        <span>AI SYSTEMS · XR · COMPUTER VISION · PROJECT MANAGEMENT · RESEARCH · DATA · SIMULATION ·</span>
+      </div>
+    </section>
+
+    <section class="about section" id="about" data-observe>
+      <div class="section-label reveal"><span>01</span> PERFIL</div>
+      <div class="about-grid">
+        <h2 class="editable reveal" data-path="about.title"></h2>
+        <div class="about-copy reveal">
+          <p class="editable" data-path="about.body"></p>
+          <div class="skills-cloud" id="skills"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="projects section" id="projects" data-observe>
+      <div class="section-head reveal">
+        <div class="section-label"><span>02</span> PROYECTOS</div>
+        <div class="carousel-controls">
+          <button id="prevProject" aria-label="Proyecto anterior">←</button>
+          <span id="projectIndex">01 / 04</span>
+          <button id="nextProject" aria-label="Proyecto siguiente">→</button>
+        </div>
+      </div>
+
+      <div class="carousel-shell reveal">
+        <div class="project-track" id="projectTrack"></div>
+      </div>
+    </section>
+
+    <section class="experience section" id="experience" data-observe>
+      <div class="section-label reveal"><span>03</span> TRAYECTORIA</div>
+      <div class="timeline" id="timeline"></div>
+    </section>
+
+    <section class="contact section" id="contact" data-observe>
+      <div class="contact-card reveal">
+        <div class="contact-scan"></div>
+        <p class="section-label"><span>04</span> CONTACTO</p>
+        <h2 class="editable" data-path="contact.title"></h2>
+        <p class="editable contact-copy" data-path="contact.body"></p>
+        <div class="contact-links" id="contactLinks"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>© <span id="year"></span> Leandro Palmieri</span>
+    <span>Built as E15 · AI + BRS Portfolio Agent</span>
+  </footer>
+
+  <dialog id="aiDialog">
+    <form method="dialog" class="ai-panel">
+      <div class="ai-panel-head">
+        <div>
+          <small>BRS PORTFOLIO AGENT</small>
+          <h3>Editar landing con IA</h3>
+        </div>
+        <button value="cancel" class="close-btn" aria-label="Cerrar">×</button>
+      </div>
+      <p>Describí el cambio. La IA propondrá una nueva versión del contenido y BRS la validará antes de aplicarla.</p>
+      <textarea id="aiPrompt" placeholder="Ej.: Dale más protagonismo a BRS y hacé el hero más orientado a IA aplicada."></textarea>
+      <div class="agent-flow">
+        <span>Prompt</span><b>→</b><span>AI</span><b>→</b><span>BRS</span><b>→</b><span>Release</span>
+      </div>
+      <div class="ai-result" id="aiResult" hidden></div>
+      <menu>
+        <button value="cancel" class="ghost-btn">Cancelar</button>
+        <button type="button" class="ai-btn" id="runAiEdit">Generar + validar</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <div class="edit-toast" id="editToast" hidden>
+    <span>Modo edición activo</span>
+    <button id="saveLocal">Guardar local</button>
+    <button id="resetLocal">Reset</button>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
