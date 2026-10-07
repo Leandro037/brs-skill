@@ -1,0 +1,64 @@
+name: E18-B official BFCL checker pilot
+
+on:
+  push:
+    branches:
+      - experiment/e18b-official-bfcl
+  workflow_dispatch:
+
+jobs:
+  e18b:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      BRS_E18B_MODEL: gpt-4o-mini
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify secret exists
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "OPENAI_API_KEY secret is missing."
+            exit 1
+          fi
+
+      - name: Install BRS
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[openai]"
+
+      - name: Install pinned official BFCL evaluator
+        run: |
+          python -m pip install "git+https://github.com/ShishirPatil/gorilla.git@6ea57973c7a6097fd7c5915698c54c17c5b1b6c8#subdirectory=berkeley-function-call-leaderboard"
+
+      - name: Smoke import official BFCL checker
+        run: |
+          python - <<'PY'
+          from bfcl_eval.eval_checker.ast_eval.ast_checker import ast_checker
+          from bfcl_eval.eval_checker.eval_runner import _evaluate_single_relevance_entry
+          print("BFCL official checker imports OK")
+          PY
+
+      - name: Run E18-B
+        run: python -m experiments.e18b_official_bfcl > e18b_output.json
+
+      - name: Show summary
+        run: |
+          python - <<'PY'
+          import json
+          with open("e18b_output.json", "r", encoding="utf-8") as f:
+              data = json.load(f)
+          print(json.dumps(data["summary"], indent=2, ensure_ascii=False))
+          PY
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e18b-official-bfcl-results
+          path: e18b_output.json
