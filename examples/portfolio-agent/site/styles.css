@@ -74,3 +74,11 @@ dialog{width:min(92vw,700px);border:1px solid #6fe8ff2d;border-radius:24px;paddi
 @keyframes scrollCue{0%{transform:translateY(0);opacity:0}25%{opacity:1}100%{transform:translateY(70px);opacity:0}}
 @media(max-width:900px){.scroll-cue{display:none}.carousel-shell:before,.carousel-shell:after{width:32px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
+.version-badge{
+  display:inline-flex;align-items:center;height:34px;padding:0 10px;border-radius:999px;
+  border:1px solid #6fe8ff2c;background:#6fe8ff0b;color:#9fdff0;
+  font:10px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.12em;
+  white-space:nowrap
+}
+@media(max-width:700px){.version-badge{display:none}}
