@@ -1,8 +1,10 @@
 from dataclasses import dataclass
 
 from brs import ValidationDecision
-from brs.agentic import JSON_CODEC, TEXT_CODEC, generate_and_validate
+from brs.agentic import ArtifactCodec, JSON_CODEC, TEXT_CODEC, generate_and_validate
 from brs.builtin_profiles import make_code_profile, make_json_profile
+from brs.models import CheckResult, CheckStatus
+from brs.profiles import BRSProfile
 from brs.providers.base import ProviderResponse
 
 
@@ -127,3 +129,46 @@ def test_code_profile_generation_blocks_bad_syntax_without_repair():
 
     assert result.decision == ValidationDecision.BLOCK
     assert "CODE_PYTHON_SYNTAX" in [x.check_id for x in result.validation.failed_checks]
+
+
+
+def test_custom_codec_normalizes_repair_before_revalidation():
+    provider = FakeProvider([
+        "BAD",
+        "```python\nGOOD\n```",
+    ])
+
+    codec = ArtifactCodec(
+        name="strip-fences",
+        parse=lambda value: (
+            value.replace("```python", "").replace("```", "").strip()
+        ),
+        serialize=str,
+        output_instruction="Return only the normalized artifact.",
+    )
+
+    def normalized_check(artifact, context):
+        return CheckResult(
+            check_id="NORMALIZED_ARTIFACT",
+            status=CheckStatus.PASS if artifact == "GOOD" else CheckStatus.FAIL,
+            evidence=f"artifact={artifact!r}",
+        )
+
+    profile = BRSProfile(
+        name="normalization-regression",
+        checks=[normalized_check],
+    )
+
+    result = generate_and_validate(
+        prompt="Return the artifact",
+        profile=profile,
+        provider=provider,
+        codec=codec,
+        max_repair_iterations=1,
+        allowed_repair_check_ids={"NORMALIZED_ARTIFACT"},
+    )
+
+    assert result.decision == ValidationDecision.RELEASE
+    assert result.validation.artifact == "GOOD"
+    assert result.validation.repair_attempts == 1
+    assert result.validation.iterations == 2
