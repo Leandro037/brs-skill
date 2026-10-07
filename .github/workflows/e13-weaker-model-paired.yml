@@ -1,9 +1,6 @@
 name: E13 weaker model paired
 
 on:
-  push:
-    branches:
-      - experiment/e13-weaker-model-paired
   workflow_dispatch:
 
 jobs:
