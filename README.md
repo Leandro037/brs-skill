@@ -6,9 +6,9 @@ BRS is not a model. It is a **pre-release validation layer** that organizes expl
 
 ## Status
 
-**BRS Skill v0.3 — experimental implementation**
+**BRS Skill v1.0.0 — Research Release**
 
-This repository generalizes the BRS architecture beyond the original Motion Lab research domain. Cross-domain portability is a design goal and has not yet been independently validated.
+This repository consolidates the BRS architecture and research evidence through E18-B. Positive paired signals have been observed across code, a real application, a second model, EvalPlus/HumanEval+ Mini, and BFCL tool calling. Independent external replication remains an open milestone.
 
 ## Core flow
 
