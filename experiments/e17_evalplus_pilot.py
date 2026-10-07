@@ -7,7 +7,7 @@ import json
 import os
 from typing import Any
 
-from brs.agentic import TEXT_CODEC, with_provider_repair
+from brs.agentic import ArtifactCodec, with_provider_repair
 from brs.factory import brs_from_profile
 from brs.models import CheckResult, CheckStatus
 from brs.profiles import BRSProfile
@@ -97,6 +97,18 @@ def evaluate_candidate(code: str, problem, expected) -> tuple[bool, str, dict[st
     return valid, "\n".join(lines), evidence
 
 
+def make_evalplus_codec(problem) -> ArtifactCodec:
+    return ArtifactCodec(
+        name="evalplus-python",
+        parse=lambda value: sanitize(value, entrypoint=problem["entry_point"]),
+        serialize=lambda value: str(value),
+        output_instruction=(
+            "Return only complete Python source code. "
+            "Do not use Markdown fences or commentary."
+        ),
+    )
+
+
 def make_profile(problem, expected) -> BRSProfile:
     def external_eval_check(artifact, context):
         if not isinstance(artifact, str):
@@ -155,7 +167,7 @@ def main():
         profile = with_provider_repair(
             make_profile(problem, groundtruth[task_id]),
             provider=provider,
-            codec=TEXT_CODEC,
+            codec=make_evalplus_codec(problem),
             provider_calls=calls,
             allowed_check_ids={"EVALPLUS_HUMANEVAL_PLUS"},
             repair_instructions=(
@@ -194,6 +206,9 @@ def main():
                 "repair_calls": len(calls),
                 "repair_tokens": case_repair_tokens,
                 "failed_checks": [x.check_id for x in result.failed_checks],
+                "decision_matches_external": (
+                    (result.decision.value == "RELEASE") == final_valid
+                ),
             },
         })
 
@@ -211,6 +226,9 @@ def main():
     unsafe_release = sum(
         r["brs"]["decision"] == "RELEASE" and not r["brs"]["valid"]
         for r in rows
+    )
+    decision_external_mismatches = sum(
+        not r["brs"]["decision_matches_external"] for r in rows
     )
 
     summary = {
@@ -234,6 +252,7 @@ def main():
         "repair_success_rate_on_raw_defects": improved / raw_fail if raw_fail else None,
         "unresolved_blocks": unresolved,
         "unsafe_release": unsafe_release,
+        "decision_external_mismatches": decision_external_mismatches,
         "generation_tokens": generation_tokens,
         "repair_calls": repair_calls,
         "repair_tokens": repair_tokens,
@@ -245,7 +264,8 @@ def main():
         "repair_feedback": "public specification + localized failing EvalPlus input/expected output",
         "scope_note": (
             "20-task external-benchmark pilot. HumanEval may be contaminated in model training; "
-            "repair receives localized failing-test feedback."
+            "repair receives localized failing-test feedback. Repair outputs are normalized "
+            "with the same EvalPlus sanitizer before BRS revalidation and final external evaluation."
         ),
     }
 
