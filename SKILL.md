@@ -109,7 +109,7 @@ A profile defines checks and optionally a repair function and safety gate.
 
 BRS Core should remain independent of any LLM provider.
 
-Provider adapters may implement generation and localized repair. In v0.3, the reference implementation includes an optional OpenAI Responses API adapter.
+Provider adapters may implement generation and localized repair. In v1.0, the reference implementation includes an optional OpenAI Responses API adapter. The experimental program also includes cross-model, external-code-benchmark, application-level, and tool-calling validation studies; these results are evidence for the architecture, not certification of every profile or deployment.
 
 The provider must not replace the BRS release decision.
 

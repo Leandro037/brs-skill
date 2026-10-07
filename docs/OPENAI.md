@@ -1,6 +1,6 @@
 # OpenAI Adapter
 
-BRS Skill v0.3 adds an optional OpenAI adapter using the Responses API.
+BRS Skill v1.0 includes an optional OpenAI adapter using the Responses API.
 
 The BRS core remains provider-agnostic. OpenAI is used only for generation and, when explicitly enabled, localized repair.
 
@@ -32,7 +32,7 @@ Optional model override:
 $env:BRS_OPENAI_MODEL="gpt-6-luna"
 ```
 
-The default model in v0.3 is `gpt-6-luna`, chosen as a low-cost general model. You can override it without changing the code.
+The reference adapter default is `gpt-6-luna`; override it when your deployment requires another supported model. You can override it without changing the code.
 
 ## Run the example
 
@@ -67,7 +67,7 @@ FAIL ─→ localized OpenAI repair
 
 ## What this does not prove
 
-A working OpenAI adapter does not demonstrate that BRS improves reliability across models or domains. That requires controlled comparison such as:
+Adapter availability alone does not demonstrate reliability. BRS v1.0 includes controlled internal and external-benchmark experiments, but independent replication and deployment-specific validation are still required. Relevant evaluation dimensions include:
 
 - generation without BRS;
 - generation with BRS;

@@ -1,5 +1,41 @@
 # Changelog
 
+## 1.0.0 — Research Release — 2026-10-07
+
+### Research status
+
+- Closes the first major internal experimental phase through E18-B.
+- Consolidates paired evidence across code, application edits, cross-model evaluation, EvalPlus/HumanEval+, and BFCL tool calling.
+- Adds explicit external-validation guidance for independent replication.
+- Promotes E18-B, scored by BFCL's official checker kernel, as the preferred tool-calling evidence.
+
+### Core
+
+- Stable provider-agnostic validation/repair/revalidation/release architecture.
+- Atomic binary checks with evidence.
+- Bounded localized repair.
+- Mandatory full revalidation.
+- RELEASE/BLOCK decision.
+- Validation trace and token accounting support.
+
+### Research-integrity changes carried into v1.0
+
+- Repair-output normalization regression coverage after E17.
+- BFCL optional/default label-semantics regression coverage after E18.
+- Invalid or diagnostic runs are preserved but excluded from primary evidence.
+
+### Documentation
+
+- Adds consolidated research evidence.
+- Adds external validation guide.
+- Updates citation metadata.
+- Updates package and skill documentation to v1.0.
+
+### Limitations
+
+v1.0 is a research release, not a safety certification. Independent replication remains an open milestone.
+
+
 ## 0.3.0 — 2026-10-06
 
 Adds provider-driven generation and repair, beginning with OpenAI Responses API support.
