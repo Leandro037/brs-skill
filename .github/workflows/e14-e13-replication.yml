@@ -33,7 +33,7 @@ jobs:
           python -m pip install -e ".[openai]"
 
       - name: Run E14
-        run: python experiments/e14_e13_replication.py > e14_output.json
+        run: python -m experiments.e14_e13_replication > e14_output.json
 
       - name: Show summary
         run: |
