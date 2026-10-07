@@ -10,6 +10,20 @@ BRS is not a model. It is a **pre-release validation layer** that organizes expl
 
 This repository consolidates the BRS architecture and research evidence through E18-B. Positive paired signals have been observed across code, a real application, a second model, EvalPlus/HumanEval+ Mini, and BFCL tool calling. Independent external replication remains an open milestone.
 
+## Highlighted research results
+
+| Experiment | Domain / evaluator | Cases | RAW | BRS final |
+|---|---|---:|---:|---:|
+| E14 | Internal Python benchmark | 360 | 85.56% | **96.39%** |
+| E15-B | Real Portfolio Agent edits | 12 | 50.00% | **91.67%** |
+| E16 | Cross-model Python pilot | 90 | 95.56% | **100.00%** |
+| E17 | EvalPlus HumanEval+ Mini | 20 | 90.00% | **95.00%** |
+| E18-B | BFCL v4 official checker kernel | 30 | 76.67% | **90.00%** |
+
+Across these highlighted paired experiments, no RAW-correct candidate was observed to become incorrect after BRS and no unsafe RELEASE was observed under the experiment oracle. These are sample observations, not guarantees.
+
+See [docs/RESEARCH_EVIDENCE.md](./docs/RESEARCH_EVIDENCE.md) for the complete experimental record and [docs/EXTERNAL_VALIDATION.md](./docs/EXTERNAL_VALIDATION.md) for independent replication.
+
 ## Core flow
 
 ```text
@@ -238,12 +252,17 @@ This repository does **not** claim:
 - universal accuracy;
 - universal superiority over monolithic LLM judges;
 - independent evaluator errors when the same model family is reused;
-- validated cross-domain portability;
-- clinical or safety-critical certification.
+- guaranteed cross-domain portability;
+- independent third-party replication;
+- clinical, legal, financial, security, or safety-critical certification.
 
-## Research origin
+## Research status
 
-BRS was developed and evaluated in a research program focused on AI-generated executable movement artifacts. The experimental phase E04–E08 is treated as frozen evidence. This repository is a reusable implementation derived from that architecture, not a modification of the original experimental evidence.
+BRS originated in a research program on AI-generated executable movement artifacts and was later evaluated across additional domains through E18-B, including code, a real AI-editable application, a second model, EvalPlus/HumanEval+ Mini, and BFCL tool calling with BFCL's official checker kernel.
+
+Methodological failures and superseded runs are preserved rather than hidden. The preferred next milestone is independent external replication rather than more project-authored benchmarks.
+
+See [Research Evidence](./docs/RESEARCH_EVIDENCE.md), [External Validation Guide](./docs/EXTERNAL_VALIDATION.md), [CHANGELOG.md](./CHANGELOG.md), and [CITATION.cff](./CITATION.cff).
 
 ## License
 
