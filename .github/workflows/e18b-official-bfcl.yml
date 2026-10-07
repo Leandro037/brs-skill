@@ -1,9 +1,6 @@
 name: E18-B official BFCL checker pilot
 
 on:
-  push:
-    branches:
-      - experiment/e18b-official-bfcl
   workflow_dispatch:
 
 jobs:
