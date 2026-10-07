@@ -154,7 +154,7 @@ print(result.decision)
 
 ## OpenAI end-to-end adapter
 
-v0.3 adds an optional provider layer for real model generation and localized repair while keeping BRS Core provider-agnostic.
+v1.0 includes an optional provider layer for real model generation and localized repair while keeping BRS Core provider-agnostic.
 
 ```text
 Prompt
