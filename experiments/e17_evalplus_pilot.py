@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import contextlib
 import hashlib
+import io
 import json
 import os
 from typing import Any
@@ -45,7 +47,11 @@ def failing_index(details):
 
 
 def evaluate_candidate(code: str, problem, expected) -> tuple[bool, str, dict[str, Any]]:
-    result = check_correctness(
+    # EvalPlus may emit progress/diagnostic text to stdout. Capture it so the
+    # benchmark's machine-readable JSON remains clean and reproducible.
+    external_stdout = io.StringIO()
+    with contextlib.redirect_stdout(external_stdout):
+        result = check_correctness(
         dataset="humaneval",
         completion_id=0,
         problem=problem,
@@ -53,8 +59,8 @@ def evaluate_candidate(code: str, problem, expected) -> tuple[bool, str, dict[st
         expected_output=expected,
         base_only=False,
         fast_check=False,
-        identifier=problem["task_id"],
-    )
+            identifier=problem["task_id"],
+        )
 
     base_status, base_details = result["base"]
     plus_status, plus_details = result["plus"]
