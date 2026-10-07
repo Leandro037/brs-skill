@@ -52,13 +52,13 @@ def evaluate_candidate(code: str, problem, expected) -> tuple[bool, str, dict[st
     external_stdout = io.StringIO()
     with contextlib.redirect_stdout(external_stdout):
         result = check_correctness(
-        dataset="humaneval",
-        completion_id=0,
-        problem=problem,
-        solution=code,
-        expected_output=expected,
-        base_only=False,
-        fast_check=False,
+            dataset="humaneval",
+            completion_id=0,
+            problem=problem,
+            solution=code,
+            expected_output=expected,
+            base_only=False,
+            fast_check=False,
             identifier=problem["task_id"],
         )
 
