@@ -1,9 +1,6 @@
 name: E10 raw model vs BRS
 
 on:
-  push:
-    branches:
-      - experiment/e10-raw-vs-brs
   workflow_dispatch:
 
 jobs:
