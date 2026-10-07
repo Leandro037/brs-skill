@@ -1,9 +1,6 @@
 name: E17 EvalPlus recovery run
 
 on:
-  push:
-    branches:
-      - experiment/e17-evalplus-pilot
   workflow_dispatch:
 
 jobs:
