@@ -1,9 +1,6 @@
 name: E14 E13 replication
 
 on:
-  push:
-    branches:
-      - experiment/e14-e13-replication
   workflow_dispatch:
 
 jobs:
