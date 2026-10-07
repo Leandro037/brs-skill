@@ -75,6 +75,12 @@ function updateCarousel(){
   track.style.transform=`translateX(-${state.index*width}px)`;
   [...track.children].forEach((el,i)=>el.classList.toggle("active",i===state.index));
   $("#projectIndex").textContent=`${String(state.index+1).padStart(2,"0")} / ${String(state.data.projects.length).padStart(2,"0")}`;
+  const progress=$("#carouselProgressBar");
+  if(progress){
+    const count=Math.max(1,state.data.projects.length);
+    progress.style.width=(100/count)+"%";
+    progress.style.transform=`translateX(${state.index*100}%)`;
+  }
 }
 
 $("#nextProject").addEventListener("click",()=>{state.index=(state.index+1)%state.data.projects.length;updateCarousel()});
@@ -183,3 +189,43 @@ function attr(v){return escapeHtml(v)}
 $("#year").textContent=new Date().getFullYear();
 
 loadData();
+
+
+let touchStartX=null;
+const carouselShell=$(".carousel-shell");
+if(carouselShell){
+  carouselShell.addEventListener("touchstart",e=>{touchStartX=e.changedTouches[0].clientX},{passive:true});
+  carouselShell.addEventListener("touchend",e=>{
+    if(touchStartX===null)return;
+    const delta=e.changedTouches[0].clientX-touchStartX;
+    if(Math.abs(delta)>45){
+      state.index = delta<0
+        ? (state.index+1)%state.data.projects.length
+        : (state.index-1+state.data.projects.length)%state.data.projects.length;
+      updateCarousel();
+    }
+    touchStartX=null;
+  },{passive:true});
+}
+
+document.addEventListener("keydown",e=>{
+  if(!state.data || document.activeElement?.matches("textarea,[contenteditable='true']"))return;
+  if(e.key==="ArrowRight"){
+    state.index=(state.index+1)%state.data.projects.length;updateCarousel();
+  }else if(e.key==="ArrowLeft"){
+    state.index=(state.index-1+state.data.projects.length)%state.data.projects.length;updateCarousel();
+  }
+});
+
+let lastScrollY=0;
+window.addEventListener("scroll",()=>{
+  const bar=$(".topbar");
+  if(!bar)return;
+  bar.classList.toggle("scrolled",scrollY>24);
+  if(scrollY>lastScrollY && scrollY>180){
+    bar.style.transform="translate(-50%,-8px)";
+  }else{
+    bar.style.transform="translate(-50%,0)";
+  }
+  lastScrollY=scrollY;
+},{passive:true});

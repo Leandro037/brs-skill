@@ -44,3 +44,33 @@ dialog{width:min(92vw,700px);border:1px solid #6fe8ff2d;border-radius:24px;paddi
 @keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{70%{box-shadow:0 0 0 9px transparent}}@keyframes marquee{to{transform:translateX(-50%)}}@keyframes scan{0%,100%{top:0;opacity:0}15%{opacity:1}50%{top:100%}80%{opacity:.7}}
 @media(max-width:900px){.nav{display:none}.topbar{height:62px}.top-actions .ghost-btn{display:none}.hero{grid-template-columns:1fr;padding-top:140px}.hero-visual{justify-content:flex-start}.signal-card{max-width:520px}.stat-strip{grid-template-columns:1fr 1fr}.about-grid{grid-template-columns:1fr;gap:28px}.timeline-item{grid-template-columns:1fr;gap:8px}.contact-card{padding:30px}.project-card{flex-basis:86vw}}
 @media(max-width:560px){.brand-text{display:none}.top-actions .ai-btn{font-size:12px;padding:10px}.hero{padding-top:120px}.hero-actions{flex-wrap:wrap}.stat-strip{grid-template-columns:1fr 1fr}.stat{padding:16px 8px}.stat+.stat{padding-left:12px}.about,.projects,.experience,.contact{padding:90px 0}.contact h2{margin-top:65px}.contact-card{min-height:500px}.project-card{padding:22px;min-height:430px}.project-bottom{left:22px;right:22px}footer{gap:20px;flex-direction:column}}
+
+
+/* E15 V2.1 interaction polish */
+.topbar{transition:transform .35s ease,background .35s ease,border-color .35s ease}
+.topbar.scrolled{background:#06101eea;border-color:#6fe8ff38;box-shadow:0 20px 60px #0008}
+.nav a{overflow:hidden}
+.nav a:before{content:"";position:absolute;inset:auto 14px 6px;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);transform:scaleX(0);transform-origin:center;transition:transform .3s ease}
+.nav a:hover:before{transform:scaleX(1)}
+.hero-copy{position:relative;z-index:3}
+.hero h1{background:linear-gradient(180deg,#f6fbff 0%,#dbefff 60%,#8eb3cd 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.scroll-cue{position:absolute;right:0;bottom:28px;display:flex;align-items:center;gap:10px;color:#6f879b;text-decoration:none;font:10px ui-monospace,SFMono-Regular,monospace;letter-spacing:.18em;writing-mode:vertical-rl}
+.scroll-cue i{display:block;width:1px;height:46px;background:linear-gradient(var(--cyan),transparent);position:relative;overflow:hidden}
+.scroll-cue i:after{content:"";position:absolute;left:0;top:-18px;width:1px;height:18px;background:#fff;animation:scrollCue 1.8s ease-in-out infinite}
+.carousel-shell{position:relative;padding-bottom:28px}
+.carousel-shell:before,.carousel-shell:after{content:"";position:absolute;top:0;bottom:28px;width:100px;z-index:5;pointer-events:none}
+.carousel-shell:before{left:-2px;background:linear-gradient(90deg,var(--bg),transparent)}
+.carousel-shell:after{right:-2px;background:linear-gradient(270deg,var(--bg),transparent)}
+.project-card{backdrop-filter:blur(12px)}
+.project-card.active{box-shadow:0 40px 95px #0006,0 0 0 1px #6fe8ff12 inset}
+.project-card.active:after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 10%,#ffffff09 35%,transparent 60%);transform:translateX(-120%);animation:cardSweep 5s ease-in-out infinite;pointer-events:none}
+.carousel-progress{height:2px;background:#ffffff0e;margin-top:22px;position:relative;overflow:hidden;border-radius:999px}
+.carousel-progress span{display:block;height:100%;width:25%;background:linear-gradient(90deg,var(--cyan),var(--blue));box-shadow:0 0 14px var(--cyan);transition:transform .65s cubic-bezier(.2,.8,.2,1),width .35s}
+.section:before{content:"";position:absolute;left:-60px;top:118px;width:28px;height:1px;background:#6fe8ff33;box-shadow:40px 0 0 #6fe8ff18,80px 0 0 #6fe8ff0e;opacity:.8}
+.timeline-item{position:relative}
+.timeline-item:before{content:"";position:absolute;left:0;bottom:-1px;width:0;height:1px;background:linear-gradient(90deg,var(--cyan),transparent);transition:width .45s ease}
+.timeline-item:hover:before{width:100%}
+@keyframes cardSweep{0%,70%{transform:translateX(-120%)}90%,100%{transform:translateX(120%)}}
+@keyframes scrollCue{0%{transform:translateY(0);opacity:0}25%{opacity:1}100%{transform:translateY(70px);opacity:0}}
+@media(max-width:900px){.scroll-cue{display:none}.carousel-shell:before,.carousel-shell:after{width:32px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
