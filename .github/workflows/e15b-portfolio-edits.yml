@@ -1,9 +1,6 @@
 name: E15-B portfolio edit benchmark
 
 on:
-  push:
-    branches:
-      - experiment/e15b-portfolio-edits
   workflow_dispatch:
 
 jobs:
