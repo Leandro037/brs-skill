@@ -35,6 +35,7 @@ jobs:
       - name: Install pinned official BFCL evaluator
         run: |
           python -m pip install "git+https://github.com/ShishirPatil/gorilla.git@6ea57973c7a6097fd7c5915698c54c17c5b1b6c8#subdirectory=berkeley-function-call-leaderboard"
+          python -m pip install soundfile
 
       - name: Smoke import official BFCL checker
         run: |
