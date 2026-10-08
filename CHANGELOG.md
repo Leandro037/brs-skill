@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.1 — Demo privacy cleanup — 2026-10-08
+
+### Changed
+
+- Replaces the public Portfolio Agent demo data with a fully fictional example.
+- Removes personal/professional profile data from the reusable public demo while preserving the E15/E15-B implementation, protocol, tests, and published research evidence.
+- No BRS Core behavior or research result changed in this patch release.
+
+
 ## 1.0.0 — Research Release — 2026-10-07
 
 ### Research status

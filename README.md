@@ -6,7 +6,7 @@ BRS is not a model. It is a **pre-release validation layer** that organizes expl
 
 ## Status
 
-**BRS Skill v1.0.0 — Research Release**
+**BRS Skill v1.0.1 — Research Release**
 
 This repository consolidates the BRS architecture and research evidence through E18-B. Positive paired signals have been observed across code, a real application, a second model, EvalPlus/HumanEval+ Mini, and BFCL tool calling. Independent external replication remains an open milestone.
 
